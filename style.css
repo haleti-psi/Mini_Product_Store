@@ -9,3 +9,19 @@
     width: 150px;
     text-align: center;
 }
+
+button {
+   padding: 8px 10px;
+   color: white;
+   background-color: rgb(86, 84, 84);
+   border: none;
+   cursor: pointer;
+}
+button:hover {
+    background-color: green;
+}
+
+#cart-container {
+    border-top: 1px solid black;
+    
+}
