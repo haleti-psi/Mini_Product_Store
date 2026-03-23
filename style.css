@@ -1,7 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Search */
+#search {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+/* Products */
 #product-container {
     display: flex;
     gap: 20px;
 }
+
+/* Product card */
 .card {
     border: 1px solid black;
     border-radius: 10px;
@@ -10,6 +24,7 @@
     text-align: center;
 }
 
+/* Button */
 button {
    padding: 8px 10px;
    color: white;
@@ -17,11 +32,12 @@ button {
    border: none;
    cursor: pointer;
 }
+
 button:hover {
     background-color: green;
 }
 
+/* Cart */
 #cart-container {
     border-top: 1px solid black;
-    
 }
