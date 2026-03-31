@@ -13,8 +13,10 @@ body {
 
 /* Products */
 #product-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
+    align-items: start;
 }
 
 /* Product card */
@@ -22,7 +24,7 @@ body {
     border: 1px solid black;
     border-radius: 10px;
     padding: 10px;
-    width: 150px;
+    aspect-ratio: 1 / 1;
     text-align: center;
 }
 

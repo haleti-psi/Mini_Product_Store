@@ -1,12 +1,11 @@
+/*
 // Products Data
 const products = [
     {id: 1,name:"Shoes", price:1000},
     {id: 2,name:"Bags", price:2000},
     {id: 3,name:"Watches", price:3000}
 ];
-
-// Cart Data
-let cart=[];
+*/
 
 //DOM Elements
 const container = document.getElementById("product-container");
@@ -14,6 +13,12 @@ const searchInput = document.getElementById("search");
 const cartCount = document.getElementById("cart-count");
 const cartItems = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
+
+// Products Data
+let products = [];
+
+// Cart Data (load from localStorage)
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // Render Products
 function renderProducts(productList) {
@@ -29,7 +34,8 @@ function renderProducts(productList) {
     {   
         html += `
             <div class="card">
-                <h2>${item.name}</h2>
+                <img src="${item.thumbnail}" width="100" />
+                <h3>${item.title}</h3>
                 <p>Price: ₹${item.price}</p>
                 <button onclick="addToCart(${item.id})"> Add to Cart </button>
             </div>
@@ -44,7 +50,13 @@ function addToCart(id) {
     const product = products.find(function(item){
         return item.id === id;
     });
+
+    if (!product) {
+        return;
+    }
+
     cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
 
     updateCartCount();
     renderCart();
@@ -62,7 +74,7 @@ function renderCart() {
     cart.forEach(function(item, index) {
         html += `
             <div>
-                <p>${item.name} - ₹${item.price}</p>
+                <p>${item.title} - ₹${item.price}</p>
                 <button onclick="removeFromCart(${index})">Remove</button>
             </div>
         `;
@@ -81,6 +93,7 @@ function renderCart() {
 // Remove from Cart
 function removeFromCart(index) {
     cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
 
     updateCartCount();
     renderCart();
@@ -90,11 +103,25 @@ function removeFromCart(index) {
 searchInput.addEventListener("input", function(event) {
     const searchValue = event.target.value.toLowerCase();
     const filteredProducts = products.filter(function(item) {
-        return item.name.toLowerCase().includes(searchValue);
+        return item.title.toLowerCase().includes(searchValue);
     });
     renderProducts(filteredProducts);
 });
 
-// Initialize
-renderProducts(products);
+// Fetch Products from API
+fetch("https://dummyjson.com/products")
+    .then(function(res) {
+        return res.json();
+    })
+    .then(function(data) {
+        products = data.products;
+        renderProducts(products);
+    })
+    .catch(function(error) {
+        console.log("Error fetching data:", error);
+        container.innerHTML = "<p>Failed to load products</p>";
+    });
+
+// Initialize cart UI on load
+updateCartCount();
 renderCart();
